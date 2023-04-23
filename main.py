@@ -12,26 +12,28 @@ def scrape_ny():
     h3_tags = soup.findAll('h3', itemprop='name')
     p_tags = soup.findAll('p', itemprop='author')
 
-    book_arr = []
+    h = [h3.text for h3 in h3_tags]
+    p = [p.text[3:] for p in p_tags]
+    zip_list = list(zip(h, p))
 
-    for h3 in h3_tags:
-        for p in p_tags:
-            title = h3.text
-            author = p.text[3:]
+    # print(zip_list)
 
-            book_arr.append((title, author))
-
-    return book_arr
+    return zip_list
 
 
 def get_all_book_data_by_source(source):
     if source == 'nyt':
         book_list = scrape_ny()
+        all_book_data = []
 
-        for book in book_list:
-            raw_book_data = api.request_api_data(title=book[0], author=book[1])
+        for title, author in book_list:
+            raw_book_data = api.request_api_data(title=title, author=author)
+            all_book_data.append(raw_book_data)
+            # print(title, author)
 
-            print(raw_book_data)
+            # print(raw_book_data)
+
+        print(all_book_data)
 
 
 if __name__ == '__main__':

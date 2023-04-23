@@ -56,11 +56,7 @@ def request_api_data(title, author):
             isbn = i
             break
 
-    # print(isbn)
-
     book_data = get_google_book_by_isbn(isbn)
-
-    print(book_data)
 
     return book_data
 
